@@ -8,7 +8,7 @@ from tensorflow.keras.preprocessing.sequence import pad_sequences
 
 app = Flask(__name__)
 
-MAX_LEN = 200
+MAX_LEN = 200 # Panjang maksimum input teks
 
 # Path ke file
 MODEL_PATH = 'models/2_projectnlp_model.h5'
@@ -18,41 +18,42 @@ LE2_PATH = 'models/le_l2.pkl'
 LE3_PATH = 'models/le_l3.pkl'
 
 print("Loading assets...")
-model = None
+model = None 
 try:
-    if os.path.exists(MODEL_PATH):
-        model = load_model(MODEL_PATH)
-        with open(TOKENIZER_PATH, 'rb') as f: tokenizer = pickle.load(f)
-        with open(LE1_PATH, 'rb') as f: le1 = pickle.load(f)
-        with open(LE2_PATH, 'rb') as f: le2 = pickle.load(f)
-        with open(LE3_PATH, 'rb') as f: le3 = pickle.load(f)
-        print(">>> SUCCESS: System Ready!")
+    if os.path.exists(MODEL_PATH): #kalau file models/2_projectnlp_model.h5 ada 
+        model = load_model(MODEL_PATH) #panggil method load_model dari keras.models kemudian disimpan di variabel model
+        with open(TOKENIZER_PATH, 'rb') as f: tokenizer = pickle.load(f) #membuka file tokenizer.pkl dalam mode read binary, kemudian memuat isinya menggunakan pickle dan disimpan di variabel tokenizer
+        with open(LE1_PATH, 'rb') as f: le1 = pickle.load(f) #membuka file le_l1.pkl dalam mode read binary, kemudian memuat isinya menggunakan pickle dan disimpan di variabel le1
+        with open(LE2_PATH, 'rb') as f: le2 = pickle.load(f) #membuka file le_l2.pkl dalam mode read binary, kemudian memuat isinya menggunakan pickle dan disimpan di variabel le2
+        with open(LE3_PATH, 'rb') as f: le3 = pickle.load(f) #membuka file le_l3.pkl dalam mode read binary, kemudian memuat isinya menggunakan pickle dan disimpan di variabel le3
+        print("Selesai")
     else:
-        print(">>> ERROR: Model file not found. Please train first.")
+        print("File tidak ditemukan")
 except Exception as e:
     print(f">>> ERROR Loading Model: {e}")
 
-def clean_text(text):
-    text = str(text).lower()
-    text = re.sub(r'[^a-z0-9\s]', '', text)
-    return text
+# Fungsi untuk membersihkan teks
+def clean_text(text): 
+    text = str(text).lower() #ubah semua huruf jadi kecil
+    text = re.sub(r'[^a-z0-9\s]', '', text) #hapus karakter selain huruf, angka dan spasi
+    return text #mengembalikan teks yang sudah dibersihkan
 
-@app.route('/', methods=['GET', 'POST'])
-def index():
-    prediction = None
-    original_text = ""
+@app.route('/', methods=['GET', 'POST']) #route untuk halaman utama, menerima metode GET dan POST
+def index(): #fungsi index untuk menangani permintaan ke route '/'
+    prediction = None #set variabel prediction ke None
+    original_text = "" #set variabel original_text ke string kosong
     
-    if request.method == 'POST':
-        original_text = request.form['text_input']
+    if request.method == 'POST': 
+        original_text = request.form['text_input'] #mengambil data dari form input dengan nama 'text_input'
         
-        if model:
+        if model: #cek apakah model sudah dimuat
             # Preprocess & Predict
             cleaned = clean_text(original_text)
-            seq = tokenizer.texts_to_sequences([cleaned])
-            padded = pad_sequences(seq, maxlen=MAX_LEN, padding='post', truncating='post')
+            seq = tokenizer.texts_to_sequences([cleaned]) #mengubah teks yang sudah dibersihkan menjadi urutan angka menggunakan tokenizer
+            padded = pad_sequences(seq, maxlen=MAX_LEN, padding='post', truncating='post') #memastikan urutan angka memiliki panjang yang konsisten dengan menambahkan padding atau memotongnya sesuai MAX_LEN
             
             # Predict (Returns list of 3 numpy arrays)
-            preds = model.predict(padded)
+            preds = model.predict(padded) #melakukan prediksi menggunakan model dengan input padded
             
             # Extract Results
             # Output model urutannya: [out1, out2, out3]
