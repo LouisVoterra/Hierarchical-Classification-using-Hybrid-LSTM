@@ -13,7 +13,7 @@ A Deep Learning project that implements a **Hybrid CNN-LSTM architecture** to pe
 ## 📊 Model Performance
 The model was trained on the DBpedia dataset and achieved the following accuracy on the validation set:
 * **Level 1 (General Category):** 98.11% 🟢
-* **Level 2 (Specific Category):** 90.31% 🟢 *(Surpassed Target >90%)*
+* **Level 2 (Specific Category):** 90.31% 🟢 
 * **Level 3 (Detailed Category):** 80.26% 🟡
 
 ## 🛠️ Architecture Overview
