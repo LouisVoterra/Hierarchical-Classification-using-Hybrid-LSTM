@@ -27,7 +27,7 @@ We utilize a hybrid approach to maximize classification performance:
 ## 💻 Installation & Usage
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/LouisVoterra/Hierarchical-Classification-using-Hybrid-LSTM.git](https://github.com/LouisVoterra/Hierarchical-Classification-using-Hybrid-LSTM.git)
+    git clone [https://github.com/louisdewavt/Hierarchical-Classification-using-Hybrid-LSTM.git](https://github.com/louisdewavt/Hierarchical-Classification-using-Hybrid-LSTM.git)
     cd Hierarchical-Classification-using-Hybrid-LSTM
     ```
 
